@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test
+  namespace: leo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: test
+  template:
+    metadata:
+      labels:
+        service: test
+    spec:
+      containers:
+        - name: leo-test
+          image: nginx:1.11.5
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+            requests:
+              cpu: 50m
+              memory: 128Mi
