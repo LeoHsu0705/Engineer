@@ -1,0 +1,62 @@
+#部署
+kubectl apply -f test.yaml
+
+#刪除
+kubectl delete -f test.yaml
+kubectl delete pod PODNAME -n NAMESPACE
+kubectl delete pod/PODNAME -n NAMESPACE
+
+#取得資訊
+kubectl get pod -n NAMESPACE
+kubectl get svc -n NAMESPACE
+kubectl get deploy -n NAMESPACE
+
+#取得詳細資訊
+kubectl describe pod PODNAME -n NAMESPACE
+
+#進入pod
+kubectl exec -it PODNAME -n NAMESPACE -- /bin/bash
+kubectl exec -it PODNAME -n NAMESPACE -- /bin/sh
+
+#port轉發
+kubectl port-forward pod/PODNAME -n NAMESPCAE 8080:80
+kubectl port-forward svc/SVCNAME -n NAMESPACE 8080:80
+
+#deplpyment pod擴充
+kubectl scale deploy/nginx --replicas=2
+
+#deployment 更新
+kubectl set image deployment/nginx nginx=nginx:1.16.1 --record
+
+#deployment 更新紀錄
+kubectl rollout history deploy/nginx
+
+#deployment 退版
+kubectl rollout undo deploy/nginx
+
+#deploymenet 退回指定版本
+kubectl rollout undo deploy/nginx --to-revision=2
+
+#deployment 全部pod重啟
+kubectl kubectl rollout restart deploy/nginx
+
+#檢查log
+kubectl logs pod -n NAMESPACE 
+
+#確認configmap
+kubectl get cm -n NAMESPACE
+
+#取得configmap內容
+kubectl get cm CONFIGMAPNAME -n NAMESPACE  -o yaml
+
+#確認secret
+kubectl get secret -n NAMESPACE
+
+#確認sts
+kubectl get sts -n NAMESPACE
+
+#確認pvc
+kubectl get pvc -n NAMESPACE
+
+指令查詢
+https://kubernetes.io/zh/docs/reference/kubectl/overview/
