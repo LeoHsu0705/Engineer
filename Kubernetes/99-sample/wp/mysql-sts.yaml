@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mysql
-  namespace: web
+  namespace: leo
 spec:
   serviceName: mysql-svc
   replicas: 1
@@ -13,10 +13,11 @@ spec:
   - metadata:
       name: mysql-data
     spec:
+      storageClassName: openebs-hostpath
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 10Gi
+          storage: 2Gi
   template:
     metadata:
       labels:
@@ -32,16 +33,20 @@ spec:
             - containerPort: 3306
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: "123456"
+              value: royal1688
             - name: MYSQL_DATABASE
-              value: wp
+              value: wordpress
+            - name: MYSQL_USER
+              value: leo
+            - name: MYSQL_PASSWORD
+              value: royal1688
           resources:
             limits:
-              cpu: 400m
-              memory: 512Mi
-            requests:
               cpu: 200m
               memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
           volumeMounts:
             - name: mysql-data
               mountPath: /var/lib/mysql

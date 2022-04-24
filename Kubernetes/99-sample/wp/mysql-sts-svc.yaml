@@ -2,11 +2,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mysql-svc
-  namespace: web
+  namespace: leo
   labels:
      app: mysql
 spec:
-  type: LoadBalancer
+#  type: LoadBalancer
   ports:
   - port: 3306
     name: mysql

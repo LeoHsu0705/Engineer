@@ -2,19 +2,20 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wordpress-svc
-  namespace: web
+  namespace: leo
   labels:
      app: wordpress
 spec:
-  type: LoadBalancer
+  type: NodePort
 #  loadBalancerSourceRanges:
 #    - "116.241.212.54/32"
-  externalTrafficPolicy: Local
+#  externalTrafficPolicy: Local
   ports:
   - port: 80
     name: web
     protocol: TCP
     targetPort: 80
+    nodePort: 30080
   - port: 443
     name: https
     protocol: TCP
