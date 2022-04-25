@@ -6,10 +6,10 @@ metadata:
 data:
   nginx.conf: |
    server {
-           listen 3000;
+           listen 80;
            root /var/www/html;
            index index.php index.html index.htm;
-           server_name 192.168.168.45;
+           server_name www.leodockerwp.com;
            location / {
                    try_files $uri $uri/ =404;
            }

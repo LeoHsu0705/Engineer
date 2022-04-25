@@ -6,7 +6,7 @@ metadata:
   labels:
      app: wordpress
 spec:
-  type: NodePort
+#  type: NodePort
 #  loadBalancerSourceRanges:
 #    - "116.241.212.54/32"
 #  externalTrafficPolicy: Local
@@ -15,7 +15,6 @@ spec:
     name: web
     protocol: TCP
     targetPort: 80
-    nodePort: 30080
   - port: 443
     name: https
     protocol: TCP

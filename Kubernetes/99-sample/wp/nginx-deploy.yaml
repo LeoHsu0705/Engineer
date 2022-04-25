@@ -15,10 +15,10 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.14.2
+        image: nginx:latest
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 3000
+        - containerPort: 80
         resources:
          requests:
             cpu: 50m
@@ -27,12 +27,12 @@ spec:
             cpu: 100m
             memory: 256Mi
         envFrom:
-          - configMapRef:
-              name: nginx-config
-        volumeMounts:
-          - name: data-volume
-            mountPath: /etc/nginx/conf.d
-      volumes:
-        - name: data-volume
-          persistentVolumeClaim:
-            claimName: data-volume
+        - configMapRef:
+            name: nginx-config
+#        volumeMounts:
+#          - name: data-volume
+#            mountPath: /etc/nginx/conf.d
+#      volumes:
+#        - name: data-volume
+#          persistentVolumeClaim:
+#            claimName: data-volume
