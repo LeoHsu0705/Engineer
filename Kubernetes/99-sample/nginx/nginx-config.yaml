@@ -34,7 +34,7 @@ data:
 
   wordpress.conf: |
     server {
-      listen 30080;
+      listen 80;
       root /var/www/html;
       index index.php index.html index.htm;
       server_name www.leodockerwp.com;
