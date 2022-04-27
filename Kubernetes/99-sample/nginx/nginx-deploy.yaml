@@ -27,14 +27,37 @@ spec:
          limits:
             cpu: 100m
             memory: 256Mi
-#        volumeMounts:
-#          - mountPath: /etc/nginx
-#            readOnly: true
-#            name: nginx-config
-#      volumes:
-#      - name: nginx-config
-#        configMap:
-#          name: nginx-config
+        startupProbe:
+          tcpSocket:
+            port: nginx-port
+          initialDelaySeconds: 5
+          failureThreshold: 60
+          timeoutSeconds: 3
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: nginx-port
+          failureThreshold: 3
+          periodSeconds: 10
+          timeoutSeconds: 3
+        readinessProbe:
+          tcpSocket:
+            port: nginx-port
+          periodSeconds: 3
+          timeoutSeconds: 3
+        volumeMounts:
+          - mountPath: /etc/nginx/nginx.conf
+            readOnly: true
+            name: nginx-config
+            subPath: nginx.conf
+          - mountPath: /etc/nginx/conf.d/wordpress.conf
+            readOnly: true
+            name: nginx-config
+            subPath: wordpress.conf    
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
 #          items:
 #          - key: nginx.conf
 #            path: nginx.conf

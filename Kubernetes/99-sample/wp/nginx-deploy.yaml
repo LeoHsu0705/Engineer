@@ -19,7 +19,6 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
-          name: nginx-port
         resources:
          requests:
             cpu: 50m
@@ -27,34 +26,16 @@ spec:
          limits:
             cpu: 100m
             memory: 256Mi
-        startupProbe:
-          tcpSocket:
-            port: nginx-port
-          initialDelaySeconds: 20
-          failureThreshold: 60
-          timeoutSeconds: 3
-          periodSeconds: 10
-        livenessProbe:
-          tcpSocket:
-            port: nginx-port
-          failureThreshold: 3
-          periodSeconds: 10
-          timeoutSeconds: 3
-        readinessProbe:
-          tcpSocket:
-            port: nginx-port
-          periodSeconds: 3
-          timeoutSeconds: 3 
         volumeMounts:
-          - mountPath: /etc/nginx
+          - mountPath: /etc/nginx/nginx.conf
             readOnly: true
             name: nginx-config
+            subPath: nginx.conf
+          - mountPath: /etc/nginx/conf.d/default.conf
+            readOnly: true
+            name: nginx-config
+            subPath: default.conf
       volumes:
       - name: nginx-config
         configMap:
           name: nginx-config
-          items:
-          - key: nginx.conf
-            path: nginx.conf
-          - key: wordpress.conf
-            path: conf.d/wordpress.conf

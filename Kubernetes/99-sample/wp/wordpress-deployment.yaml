@@ -19,13 +19,6 @@ spec:
       labels:
         app: wordpress
     spec:
-      initContainers:
-      - name: check-db-ready
-        image: imega/mysql-client
-        command:
-          - 'sh'
-          - '-c'
-          - 'until mysqladmin ping -h mysql-svc &> /dev/null; do echo waiting; sleep 2; done'
       containers:
       - name: wordpress
         image: wordpress:latest
@@ -52,7 +45,7 @@ spec:
         startupProbe:
           tcpSocket:
             port: wp-port
-          initialDelaySeconds: 5
+          initialDelaySeconds: 30
           failureThreshold: 60
           timeoutSeconds: 3
           periodSeconds: 10
