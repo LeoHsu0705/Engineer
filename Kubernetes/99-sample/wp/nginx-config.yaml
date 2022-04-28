@@ -38,9 +38,10 @@ data:
   default.conf: |
     server {
       listen 80;
-      server_name www.leodockerwp.com;
+      #server_name www.leodockerwp.com;
+      resolver kube-dns.kube-system.svc.cluster.local valid=30s ipv6=off;
       location / {
-        proxy_pass http://kube-dns.kube-system;
+        proxy_pass http://wordpress-svc:3000;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $remote_addr;        
       }
