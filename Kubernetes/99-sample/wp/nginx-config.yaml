@@ -36,13 +36,15 @@ data:
     }
 
   default.conf: |
+    upstream wordpress-svc:3000 {
+      server wordpress-svc.leo;
+    }
     server {
       listen 80;
       #server_name www.leodockerwp.com;
-      resolver kube-dns.kube-system.svc.cluster.local valid=30s ipv6=off;
       location / {
         proxy_pass http://wordpress-svc:3000;
         proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $remote_addr;        
+        proxy_set_header X-Forwarded-For $remote_addr;  
       }
     }

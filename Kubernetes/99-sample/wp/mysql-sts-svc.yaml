@@ -6,7 +6,8 @@ metadata:
   labels:
      app: mysql
 spec:
-#  type: LoadBalancer
+#  type: ClusterIP
+#  clusterIP: None
   ports:
   - port: 3306
     name: mysql
