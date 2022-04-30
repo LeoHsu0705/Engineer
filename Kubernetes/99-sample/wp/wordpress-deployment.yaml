@@ -60,13 +60,19 @@ spec:
             port: wp-port
           periodSeconds: 3
           timeoutSeconds: 3
-#        envFrom:
-#          - configMapRef:
-#              name: env
         volumeMounts:
           - name: data-volume
             mountPath: /var/www/html
+#          - mountPath: /var/www/html/.htaccess
+#            name: wordpress-cm
+#            subPath: .htaccess
+#          - mountPath: /etc/apache2/.htaccess
+#            name: wordpress-cm
+#            subPath: .htaccess          
       volumes:
         - name: data-volume
           persistentVolumeClaim:
             claimName: data-volume
+#        - name: wordpress-cm
+#          configMap:
+#            name: wordpress-cm

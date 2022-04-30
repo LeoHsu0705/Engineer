@@ -1,0 +1,13 @@
+#kind: ConfigMap
+#apiVersion: v1
+#metadata:
+#  name: wordpress-cm
+#  namespace: leo
+#data:
+#  .htaccess: |
+#    <IfModule mod_rewrite.c>
+#    RewriteEngine on
+#    RewriteCond %{REQUEST_FILENAME} !-f
+#    RewriteCond %{REQUEST_FILENAME} !-d
+#    RewriteRule ^(.*)$ /index.php?q=$1 [L,QSA]
+#    </IfModule>
