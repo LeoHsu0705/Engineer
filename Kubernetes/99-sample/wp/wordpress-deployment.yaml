@@ -66,9 +66,9 @@ spec:
 #          - mountPath: /var/www/html/.htaccess
 #            name: wordpress-cm
 #            subPath: .htaccess
-#          - mountPath: /etc/apache2/.htaccess
+#          - mountPath: /etc/apache2/sites-available/000-default.conf
 #            name: wordpress-cm
-#            subPath: .htaccess          
+#            subPath: 000-default.conf          
       volumes:
         - name: data-volume
           persistentVolumeClaim:
