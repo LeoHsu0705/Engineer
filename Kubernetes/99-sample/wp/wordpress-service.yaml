@@ -10,15 +10,10 @@ spec:
 #  loadBalancerSourceRanges:
 #    - "116.241.212.54/32"
 #  externalTrafficPolicy: Local
-#  clusterIP: None
   ports:
   - port: 3000
     name: web
     protocol: TCP
     targetPort: 80
-#  - port: 443
-#    name: https
-#    protocol: TCP
-#    targetPort: 443
   selector:
     app: wordpress

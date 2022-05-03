@@ -36,26 +36,13 @@ data:
     }
 
   default.conf: |
-    upstream wordpress-svc:3000 {
-      server wordpress-svc.leo;
-    }
     server {
       listen 80;
       #server_name www.leodockerwp.com;
       location / {
-        proxy_pass http://wordpress-svc:3000;
+        proxy_pass http://wordpress-svc.leo:3000;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $remote_addr;
       #  try_files $uri $uri/ /index.php?$args;
         }
-      #if (!-e $request_filename)
-      #{
-      #  rewrite ^(.+)$ /index.php?q=$1 last;
-      #}
-      #rewrite /wp-admin$ $scheme://$host$uri/ permanent;
-      #location ~ \.php$ {
-      #  include fastcgi_params;
-      #  fastcgi_pass   localhost:9000;
-      #  fastcgi_param  SCRIPT_FILENAME  /usr/local/web/$fastcgi_script_name;
-      #  }
     }

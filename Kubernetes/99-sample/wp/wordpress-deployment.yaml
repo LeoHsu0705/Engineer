@@ -31,7 +31,7 @@ spec:
           - name: WORDPRESS_DB_PASSWORD
             value: royal1688
           - name: WORDPRESS_DB_NAME
-            value: wordpress
+            value: wordpress        
         ports:
         - containerPort: 80
           name: wp-port
@@ -62,17 +62,8 @@ spec:
           timeoutSeconds: 3
         volumeMounts:
           - name: data-volume
-            mountPath: /var/www/html
-#          - mountPath: /var/www/html/.htaccess
-#            name: wordpress-cm
-#            subPath: .htaccess
-#          - mountPath: /etc/apache2/sites-available/000-default.conf
-#            name: wordpress-cm
-#            subPath: 000-default.conf          
+            mountPath: /var/www/html      
       volumes:
         - name: data-volume
           persistentVolumeClaim:
             claimName: data-volume
-#        - name: wordpress-cm
-#          configMap:
-#            name: wordpress-cm
