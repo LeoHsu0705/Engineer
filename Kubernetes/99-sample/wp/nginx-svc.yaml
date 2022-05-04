@@ -13,9 +13,9 @@ spec:
     protocol: TCP
     nodePort: 30888
     targetPort: 80
-  - port: 443
-    name: https
-    protocol: TCP
-    targetPort: 443
+#  - port: 443
+#    name: https
+#    protocol: TCP
+#    targetPort: 443
   selector:
     app: nginx
