@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: wordpress
-        image: wordpress:latest
+        image: wordpress
         imagePullPolicy: IfNotPresent
         env:
           - name: WORDPRESS_DB_HOST
@@ -34,32 +34,35 @@ spec:
             value: wordpress        
         ports:
         - containerPort: 80
-          name: wp-port
-        resources:
-         requests:
-            cpu: 50m
-            memory: 100Mi
-         limits:
-            cpu: 100m
-            memory: 256Mi
-        startupProbe:
-          tcpSocket:
-            port: wp-port
-          initialDelaySeconds: 30
-          failureThreshold: 60
-          timeoutSeconds: 3
-          periodSeconds: 10
-        livenessProbe:
-          tcpSocket:
-            port: wp-port
-          failureThreshold: 3
-          periodSeconds: 10
-          timeoutSeconds: 3
-        readinessProbe:
-          tcpSocket:
-            port: wp-port
-          periodSeconds: 3
-          timeoutSeconds: 3
+#          name: wp-port
+#        resources:
+#         requests:
+#            cpu: 50m
+#            memory: 100Mi
+#         limits:
+#            cpu: 100m
+#            memory: 256Mi
+#        envFrom:
+#          - configMapRef:
+#              name: env
+#        startupProbe:
+#          tcpSocket:
+#            port: wp-port
+#          initialDelaySeconds: 30
+#          failureThreshold: 60
+#          timeoutSeconds: 3
+#          periodSeconds: 10
+#        livenessProbe:
+#          tcpSocket:
+#            port: wp-port
+#          failureThreshold: 3
+#          periodSeconds: 10
+#          timeoutSeconds: 3
+#        readinessProbe:
+#          tcpSocket:
+#            port: wp-port
+#          periodSeconds: 3
+#          timeoutSeconds: 3
         volumeMounts:
           - name: data-volume
             mountPath: /var/www/html      

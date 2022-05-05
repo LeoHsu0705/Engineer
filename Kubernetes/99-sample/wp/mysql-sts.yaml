@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: mysql:latest
+          image: mysql
           imagePullPolicy: IfNotPresent
           securityContext:
             runAsUser: 0
@@ -40,13 +40,13 @@ spec:
               value: leo
             - name: MYSQL_PASSWORD
               value: royal1688
-          resources:
-            limits:
-              cpu: 200m
-              memory: 256Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
+#          resources:
+#            limits:
+#              cpu: 200m
+#              memory: 256Mi
+#            requests:
+#              cpu: 100m
+#              memory: 128Mi
           volumeMounts:
             - name: mysql-data
               mountPath: /var/lib/mysql
