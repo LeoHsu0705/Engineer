@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: lens-metrics
+data:
+  alertmanager.yaml: |-
+    global:
+      resolve_timeout: 5m
+
+    route:
+      receiver: default #指定群組接收訊息
+      group_by: ['pod'] #取唯一值
+      group_wait: 5s #組告警等待時間,如果有告警產生後等待10s,如果有同組警告一起發出
+      #group_interval: 5s #兩組告警間格時間
+      #repeat_interval: 30m #重複告警間格時間
+
+      routes:
+      - receiver: pod
+        repeat_interval: 5m
+        group_interval: 5s
+        match:
+          severity: pod
+
+    receivers:
+    - name: 'default'
+    - name: 'pod'
+      slack_configs:
+      - api_url: 'https://hooks.slack.com/services/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'
+        channel: '#維運k8s_alert_test'
+        send_resolved: true
+        
