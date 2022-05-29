@@ -29,4 +29,5 @@ data:
       - api_url: 'https://hooks.slack.com/services/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'
         channel: '#維運k8s_alert_test'
         send_resolved: true
-        
+        title: "{{ range .Alerts }}{{ .Annotations.summary }}\n{{ end }}"
+        text: "<!channel> {{ range .Alerts }}\nNamespace: {{ .Annotations.namespace }}\nPod: {{ .Annotations.pod }}\n{{ end }}"
