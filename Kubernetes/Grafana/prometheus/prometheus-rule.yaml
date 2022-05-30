@@ -9,17 +9,17 @@ metadata:
     app.kubernetes.io/name: lens-metrics
 data:
  pod.rules.yaml: |
-     groups:
-     - name: prometheus.rules
-       rules:
-       - alert: container_memory
-         expr: container_memory_usage_bytes{namespace="leo"} > 100
-         for: 15s
-         labels:
-           severity: pod
-         annotations:
-           description: Errors while sending alerts from Prometheus {{$labels.namespace}}/{{
-             $labels.pod}} to Alertmanager {{$labels.Alertmanager}}.
+    groups:
+    - name: prometheus.rules
+      rules:
+      - alert: container_memory
+        expr: ceil(container_memory_usage_bytes{namespace="leo"}) > 100
+        for: 15s
+        labels:
+          severity: pod
+        annotations:
+          summary: "{{ $labels.pod }} 主機記憶體使用率過高"
+          description: "{{ $labels.namespace }},{{ $labels.pod }}目前記憶體使用率過高"
 
  alertmanager.rules.yaml: |
   groups:
