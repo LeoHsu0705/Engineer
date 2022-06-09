@@ -10,15 +10,15 @@ metadata:
 data:
  pod.rules.yaml: |
     groups:
-    - name: prometheus.rules
+    - name: pod.rules
       rules:
-      - alert: container_memory
+      - alert: ContainerMemory
         expr: ceil(container_memory_usage_bytes{namespace="leo"}) > 100
         for: 15s
         labels:
           severity: pod
         annotations:
-          summary: "{{ $labels.pod }} 主機記憶體使用率過高"
+          summary: "{{ $labels.namespace }} 主機記憶體使用率過高"
           description: "{{ $labels.namespace }},{{ $labels.pod }}目前記憶體使用率過高"
 
  alertmanager.rules.yaml: |
