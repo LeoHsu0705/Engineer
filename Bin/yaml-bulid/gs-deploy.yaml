@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tmp-deploy
+  namespace: rcg
+spec:
+  revisionHistoryLimit: 0
+  replicas: 1
+  selector: 
+    matchLabels:
+      service: tmp-deploy
+  template:
+    metadata:
+      labels:
+        service: tmp-deploy
+    spec:
+      imagePullSecrets:
+        - name: gcrsecret
+      containers:
+        - name: tmp-deploy
+          image: gcr.io/modern-renderer-315105/m2-gs-dev:tmp-image
+          imagePullPolicy: IfNotPresent                    
+          env:
+          - name: "GS_Guid"
+            value: tmp-guid
+          - name: "ServerId"
+            value: tmp-deploy
+          - name: "DeskCode"
+            value: tmp-deskcode
+          envFrom:
+            - configMapRef:
+                name: environment
+          ports:
+           - containerPort: 80
+             name: web-socket
+          resources:
+            limits:
+              cpu: 700m
+              memory: 256Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
+          volumeMounts:
+              - name: redis-settings # Redis 設定檔
+                readOnly: true
+                mountPath: /app/appsettings.REDIS.json
+                subPath: appsettings.REDIS.json
+              - name: loglevel-settings # Redis 設定檔
+                readOnly: true
+                mountPath: /app/appsettings.LOGLEVEL.json
+                subPath: appsettings.LOGLEVEL.json
+      volumes:
+        - name: loglevel-settings
+          configMap:
+            name: loglevel-settings
+        - name: redis-settings
+          configMap:
+            name: redis-settings

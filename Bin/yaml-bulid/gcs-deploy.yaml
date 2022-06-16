@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tmp-deploy
+  namespace: rcg
+spec:
+  revisionHistoryLimit: 0
+  replicas: 1
+  selector: 
+    matchLabels:
+      service: tmp-deploy
+  template:
+    metadata:
+      labels:
+        service: tmp-deploy
+    spec:
+      imagePullSecrets:
+        - name: gcrsecret
+      containers:
+        - name: tmp-deploy
+          image: gcr.io/modern-renderer-315105/m2-gcs-dev:tmp-image
+          imagePullPolicy: Always       
+          env:
+          - name: "StevenCode"
+            value: tmp-stevencode
+          envFrom:
+            - configMapRef:
+                name: environment
+          ports:
+           - containerPort: 3000
+             name: web-socket
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi

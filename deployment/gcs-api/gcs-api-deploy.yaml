@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gcs-api
+  namespace: rcg
+spec:
+  revisionHistoryLimit: 0
+  replicas: 3
+  selector: 
+    matchLabels:
+      service: gcs-api
+  template:
+    metadata:
+      labels:
+        service: gcs-api
+    spec:
+      imagePullSecrets:
+        - name: gcrsecret
+      containers:
+        - name: gcs-api
+          image: gcr.io/modern-renderer-315105/m2-gcs-api-dev:DEV20220608-03
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: environment
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /app/josn.key          
+          ports:
+           - containerPort: 80
+             name: api
+          resources:
+            limits:
+              cpu: 700m
+              memory: 512Mi
+            requests:
+              cpu: 300m
+              memory: 256Mi
+          volumeMounts:
+           - name: log-key
+             readOnly: true
+             mountPath: /app/josn.key
+             subPath: json.key
+      volumes:
+      - name: log-key
+        configMap:
+          name: log-key

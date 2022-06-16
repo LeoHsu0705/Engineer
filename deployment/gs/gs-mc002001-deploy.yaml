@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gs-mc002001
+  namespace: rcg
+spec:
+  revisionHistoryLimit: 0
+  replicas: 1
+  selector: 
+    matchLabels:
+      service: gs-mc002001
+  template:
+    metadata:
+      labels:
+        service: gs-mc002001
+    spec:
+      imagePullSecrets:
+        - name: gcrsecret
+      containers:
+        - name: gs-mc002001
+          image: gcr.io/modern-renderer-315105/m2-gs-dev:DEV20220609-01
+          imagePullPolicy: IfNotPresent                    
+          env:
+          - name: "GS_Guid"
+            value: DEF8D18D-7AB3-474E-A380-33B58987AD6E
+          - name: "ServerId"
+            value: gs-mc002001
+          - name: "DeskCode"
+            value: mc002001
+          envFrom:
+            - configMapRef:
+                name: environment
+          ports:
+           - containerPort: 80
+             name: web-socket
+          resources:
+            limits:
+              cpu: 700m
+              memory: 256Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi
+          volumeMounts:
+              - name: redis-settings # Redis è¨­å?æª?
+                readOnly: true
+                mountPath: /app/appsettings.REDIS.json
+                subPath: appsettings.REDIS.json
+              - name: loglevel-settings # Redis è¨­å?æª?
+                readOnly: true
+                mountPath: /app/appsettings.LOGLEVEL.json
+                subPath: appsettings.LOGLEVEL.json
+      volumes:
+        - name: loglevel-settings
+          configMap:
+            name: loglevel-settings
+        - name: redis-settings
+          configMap:
+            name: redis-settings
+
+
+
+

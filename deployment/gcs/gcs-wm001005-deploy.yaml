@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gcs-wm001005
+  namespace: rcg
+spec:
+  revisionHistoryLimit: 0
+  replicas: 1
+  selector: 
+    matchLabels:
+      service: gcs-wm001005
+  template:
+    metadata:
+      labels:
+        service: gcs-wm001005
+    spec:
+      imagePullSecrets:
+        - name: gcrsecret
+      containers:
+        - name: gcs-wm001005
+          image: gcr.io/modern-renderer-315105/m2-gcs-dev:DEV20220608-03
+          imagePullPolicy: Always       
+          env:
+          - name: "StevenCode"
+            value: wm001005
+          envFrom:
+            - configMapRef:
+                name: environment
+          ports:
+           - containerPort: 3000
+             name: web-socket
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+
+
+

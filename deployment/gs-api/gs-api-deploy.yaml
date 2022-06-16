@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gs-api
+  namespace: rcg
+spec:
+  revisionHistoryLimit: 0
+  replicas: 5
+  selector: 
+    matchLabels:
+      service: gs-api
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        service: gs-api
+    spec:
+      imagePullSecrets:
+        - name: gcrsecret
+      volumes:
+        - name: loglevel-settings
+          configMap:
+            name: loglevel-settings
+        - name: gs-api-settings
+          configMap:
+            name: gs-api-settings
+      containers:
+        - name: gs-api
+          image: gcr.io/modern-renderer-315105/m2-gs-api-dev:DEV20220609-01 
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: environment
+          ports:
+           - containerPort: 80
+             name: api
+          resources:
+            limits:
+              cpu: 700m
+              memory: 512Mi
+            requests:
+              cpu: 300m
+              memory: 256Mi
+          volumeMounts:
+              - name: loglevel-settings # Log 設定檔
+                readOnly: true
+                mountPath: /app/appsettings.LOGLEVEL.json
+                subPath: appsettings.LOGLEVEL.json
+              - name: gs-api-settings # db設定檔
+                readOnly: true
+                mountPath: /app/appsettings.K8SDB.json
+                subPath: appsettings.K8SDB.json
+          livenessProbe:
+            httpGet:
+              path: /hc
+              port: api
+            initialDelaySeconds: 10 #在初始化之後延遲多久作第一次偵測
+            periodSeconds: 60 # 每 2 次偵測的間隔
+            timeoutSeconds: 30  
+            successThreshold: 1 # 訪問成功次數可以視容器正常
+            failureThreshold: 1 # 訪問失敗次數可以視為容器失效
