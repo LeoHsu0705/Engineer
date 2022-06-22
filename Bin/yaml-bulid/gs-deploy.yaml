@@ -21,12 +21,10 @@ spec:
           image: gcr.io/modern-renderer-315105/m2-gs-dev:tmp-image
           imagePullPolicy: IfNotPresent                    
           env:
-          - name: "GS_Guid"
-            value: tmp-guid
           - name: "ServerId"
             value: tmp-deploy
-          - name: "DeskCode"
-            value: tmp-deskcode
+          - name: "StevenCode"
+            value: tmp-stevencode
           envFrom:
             - configMapRef:
                 name: environment
