@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-kila
-  namespace: kila
+  name: nginx-leo
+  namespace: leo
 spec:
   replicas: 10
   selector:

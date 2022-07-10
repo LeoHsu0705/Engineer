@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: busybox
-  namespace: kila
+  namespace: leo
   labels:
     name: busybox
 spec:
