@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
 data:
   service.webhook.slack: |
-    url: https://hooks.slack.com/services/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
+    url: https://hooks.slack.com/services/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
     headers:
       - name: Content-Type
         value: application/json
@@ -32,28 +32,36 @@ data:
               }]
             }]
           }
-  trigger.leo-deployed: |
+  trigger.on-deployed: |
     - description: Application is synced and healthy. Triggered once per commit.
       oncePer: app.status.sync.revision
       send: [leo]  # template names
       # trigger condition
       when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy'
-  trigger.leo-sync-running: |
+  trigger.on-sync-running: |
     - description: Application is being synced
       send: [leo]  # template names
-      when: and app.status.operationState.phase in ['Running']
-  trigger.leo-sync-failed: |
+      when: app.status.operationState.phase in ['Running']
+  trigger.on-sync-failed: |
     - description: Application syncing has failed
       send: [leo]  # template names
       when: app.status.operationState.phase in ['Error', 'Failed']
-  trigger.leo-sync-succeeded: |
+  trigger.on-sync-succeeded: |
     - description: Application syncing has succeeded
       send: [leo]  # template names
       when: app.status.operationState.phase in ['Succeeded']
-  trigger.leo-health-degraded: |
+  trigger.on-sync-degraded: |
+    - description: Application Out of sync
+      send: [leo]
+      # when: app.status.operationState.phase in ['OutOfSync']
+      when: app.status.sync.status == 'OutOfSync'
+  trigger.on-health-degraded: |
     - description: Application has degraded
       send: [leo]
       when: app.status.health.status == 'Degraded'
+  trigger.on-health-progressing: |
+    - when: app.status.operationState.phase in ['Progressing']
+      send: [leo]
   subscriptions: |
-    - recipients: [slack] #data webhook names
-      triggers: [leo-sync-failed, leo-health-degraded, leo-sync-succeeded, leo-sync-degraded]
+    - recipients: [slack]
+      triggers: [on-sync-failed, on-health-degraded, on-sync-succeeded, on-sync-degraded]
