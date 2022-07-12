@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-notifications-cm
+  namespace: argocd
+data:
+  service.webhook.slack: |
+    url: https://hooks.slack.com/services/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
+    headers:
+      - name: Content-Type
+        value: application/json
+  context: |
+    argocdUrl: https://192.168.168.45:30123/
+  template.leo: |
+    webhook:
+      slack:
+        method: POST
+        body: |
+          {
+            "attachments": [{
+              "title": "{{.app.metadata.name}}",
+              "title_link": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+              "color": "#18be52",
+              "fields": [{
+                "title": "Sync Status: {{.app.status.sync.status}}",
+                "value": "Time: {{.app.status.operationState.startedAt}}",
+                "short": true
+              }, {
+                "title": "Repository",
+                "value": "{{.app.spec.source.repoURL}}",
+                "short": true
+              }]
+            }]
+          }
+  trigger.leo-deployed: |
+    - description: Application is synced and healthy. Triggered once per commit.
+      oncePer: app.status.sync.revision
+      send: [leo]  # template names
+      # trigger condition
+      when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy'
+  trigger.leo-sync-running: |
+    - description: Application is being synced
+      send: [leo]  # template names
+      when: and app.status.operationState.phase in ['Running']
+  trigger.leo-sync-failed: |
+    - description: Application syncing has failed
+      send: [leo]  # template names
+      when: app.status.operationState.phase in ['Error', 'Failed']
+  trigger.leo-sync-succeeded: |
+    - description: Application syncing has succeeded
+      send: [leo]  # template names
+      when: app.status.operationState.phase in ['Succeeded']
+  trigger.leo-health-degraded: |
+    - description: Application has degraded
+      send: [leo]
+      when: app.status.health.status == 'Degraded'
+  subscriptions: |
+    - recipients: [slack] #data webhook names
+      triggers: [leo-sync-failed, leo-health-degraded, leo-sync-succeeded, leo-sync-degraded]

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+data: 
+  ui.bannercontent: "有考慮當歌手嗎？我當然有考慮當歌手啊那是我的夢想耶，我跟你說當歌手比當職業選手...我當...我當歌手是...最想當。"
+  accounts.admin: 'login'
+  statusbadge.enabled: 'true'
