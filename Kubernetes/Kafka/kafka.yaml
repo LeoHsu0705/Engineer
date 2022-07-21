@@ -11,7 +11,7 @@ metadata:
     app.kubernetes.io/component: kafka
 spec:
   podManagementPolicy: Parallel
-  replicas: 3
+  replicas: 4
   selector:
     matchLabels:
       app.kubernetes.io/name: kafka
