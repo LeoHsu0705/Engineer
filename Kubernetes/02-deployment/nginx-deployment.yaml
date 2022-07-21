@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-leo
+  name: nginx
   namespace: test-nginx
 spec:
   replicas: 2
