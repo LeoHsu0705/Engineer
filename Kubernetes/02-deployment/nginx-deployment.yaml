@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-leo
-  namespace: leo
+  namespace: test-nginx
 spec:
   replicas: 10
   selector:
@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.11.5
+        image: nginx:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80

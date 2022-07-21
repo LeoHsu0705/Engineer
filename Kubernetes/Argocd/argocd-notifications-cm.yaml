@@ -5,12 +5,12 @@ metadata:
   namespace: argocd
 data:
   service.webhook.slack: |
-    url: https://hooks.slack.com/services/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
+    url: https://hooks.slack.com/services/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
     headers:
       - name: Content-Type
         value: application/json
   context: |
-    argocdUrl: https://192.168.168.45:30123/
+    argocdUrl: https://192.168.168.46:30123/
   template.leo: |
     webhook:
       slack:
